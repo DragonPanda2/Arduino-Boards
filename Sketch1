@@ -1,0 +1,28 @@
+int led = 2;
+int button = 1;
+boolean activate = false;
+int blinds = 3;
+int lightsfront = 4;
+int lightsback = 5;
+
+void setup() {
+  
+  pinMode(led, OUTPUT);
+  pinMode(button, INPUT);
+
+}
+
+void loop() {
+  if(digitalRead(1)){
+    activate = true;
+  };
+  protocol();
+}
+
+void protocol() {
+  if (activate = true){
+    digitalWrite(3, LOW);
+    digitalWrite(4, LOW);
+    digitalWrite(5, LOW);
+  };
+}
