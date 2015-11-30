@@ -22,4 +22,13 @@ For the lights to turn off:
 
 For the audio to turn off:
   -If statement: If the audio is off, do nothing
-    -If the audio is on, turn the audio off (volume = 0) and do NOT play and sound track ("Audio: ON")
+    -If the audio is on, turn the audio off (volume = 0) and do NOT play any sound track ("Audio: ON")
+
+For the projector screen to raise:
+  -If statement: If the screen is already raised, do nothing, else:
+    -Raise the screen at a rate of X meters per second (X to be defined).
+    -When the screen reaches its apex, stop it from trying to raise any further (X = 0).
+
+For the projector to turn off:
+  -If statement: If the projector is already off, do nothing.
+    -Else: Cut the power to the projector and do NOT play any sound track.
