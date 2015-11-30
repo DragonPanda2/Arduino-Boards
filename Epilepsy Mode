@@ -1,0 +1,29 @@
+boolean activate = false;
+int light = 1;
+int button = 2;
+boolean activateOn = false;
+
+void setup() {
+  pinMode(light, OUTPUT);
+  pinMode(button, INPUT);
+}
+
+void loop() {
+  if(digitalRead(2)){activateOn = true;}
+  else{activateOn = false;};
+  
+  if (activateOn = true){epilepsy()};
+
+}
+
+void epilepsy(){
+  delay(0010);
+  if (activate = true){
+    digitalWrite(1, LOW)
+    activate = false
+  };
+  if (activate = false){
+    digitalWrite(1, HIGH)
+    activate = true)
+  };
+}
