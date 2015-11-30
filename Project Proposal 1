@@ -12,3 +12,14 @@ For the blinds to lower:
   -If statement checking whether or not the blinds have not already been lowered. If they are already down, nothing will happen.
     -If the blinds are not down, the blinds will be lowered at X meters per second (X to be defined).
     -When the blinds reach their lowest point, they will stop (X = 0)
+
+For the lights to turn off:
+  -2 If statements:
+    -If the front lights are off, do nothing, else:
+      -Dim the front lights.
+    -If the back lights are off, do nothing, else:
+      -Dim the back lights.
+
+For the audio to turn off:
+  -If statement: If the audio is off, do nothing
+    -If the audio is on, turn the audio off (volume = 0) and do NOT play and sound track ("Audio: ON")
