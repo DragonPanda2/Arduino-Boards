@@ -1,1 +1,10 @@
+Project Proposal for Project 2.
+
+Our Project is to create an Emergency Mode on the Arduino Boards.
+For this project, the following effects will be imposed on the classroom:
+  -The blinds will lower
+  -The lights will turn off
+  -The audio will turn off
+  -The projector screen will raise
+  -The projector will turn off
 
