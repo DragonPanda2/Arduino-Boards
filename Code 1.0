@@ -9,12 +9,12 @@ byte leds = 0;        //variable for lights
 
 boolean soundOn = true; //variable for whether or not the sound is on; "= true;" TO BE DELETED
 
-int sound = 4;        //variable of PIN where the sound is located
+int sound = 3;        //variable of PIN where the sound is located
 int tones = 261;      //TO BE DELETED
 
 boolean servoSpin = false;  //variable for whether or not the motor should be spinning; "= false;" TO BE DELETED
 
-int servoPin = 6;     //variable for the motor
+int servoPin = 4;     //variable for the motor
  
 Servo servo;          //registers a servo motor
 
