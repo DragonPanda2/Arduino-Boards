@@ -1,0 +1,60 @@
+#include <Servo.h>    //allow for a servo to work
+
+int panicButton = 0;  //variable for the panic button (location)
+
+int backLights = 1;   //variable for back lights (location)
+int frontLights = 2;  //variable for front lights (location)
+
+byte leds = 0;        //variable for lights
+
+boolean soundOn = true; //variable for whether or not the sound is on; "= true;" TO BE DELETED
+
+int sound = 4;        //variable of PIN where the sound is located
+int tones = 261;      //TO BE DELETED
+
+boolean servoSpin = false;  //variable for whether or not the motor should be spinning; "= false;" TO BE DELETED
+
+int servoPin = 6;     //variable for the motor
+ 
+Servo servo;          //registers a servo motor
+
+int angle = 0;        //servo position (degrees)
+
+void setup(){
+  pinMode(panicButton, INPUT_PULLUP);   //Register the panic button as an input
+  pinMode(backLights, OUTPUT);          //Register the back lights as an output
+  pinMode(frontLights, OUTPUT);         //Register the front lights as an output
+  servo.attach(servoPin);               //Register the servo
+
+  digitalWrite(frontLights, HIGH); //TO BE DELETED
+  digitalWrite(backLights, HIGH); //TO BE DELETED
+}
+
+void loop() {
+  if (digitalRead(panicButton) == LOW){   //When the panic button is pressed
+    digitalWrite(backLights, LOW);        //Turn off the back lights
+    digitalWrite(frontLights, LOW);       //Turn off the front lights
+    noTone(sound);                        //Turn the sound off
+    soundOn = false;                      //Make sure the sound stays off
+    servoSpin = true;                     //Start the motor spin
+  }
+
+  if (servoSpin == true){
+    Spin();                               //Make the motor spin if it's supposed to
+  }
+  
+  if (digitalRead(panicButton) == HIGH){  //If the panic button has not been pressed
+    if (soundOn == true){                 //If the sound is on,
+      noTone(sound);
+      tone(sound, tones, 100);            //Play the current sound
+    }
+  }
+}
+
+void Spin(){
+  for(int i; i < 180; i++){
+    servo.write(i);                       //Rotate the motor 180 degrees (counterclockwise)
+    delay(10);
+  }
+  servo.write(0);                         //And repeat
+};
