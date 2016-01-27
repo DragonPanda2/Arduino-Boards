@@ -1,0 +1,135 @@
+#include <Keypad.h>
+#include <Password.h>     //Allow for a keypad and a password to be used
+
+Password password = Password( "666911" );   //This is the password (CAN BE CHANGED)
+ 
+byte maxPasswordLength = 8;                //Max amount of characters in the password
+byte currentPasswordLength = 0;             //The length of the keys pressed on the keypad
+
+bool passwordEnter = false;                 //If the correct password has been entered
+
+const byte ROWS = 4; //Four rows on the keypad
+const byte COLS = 4; //Four columns
+
+char keys[ROWS][COLS] = {   //Map of the keypad
+{'1','2','3','A'},
+{'4','5','6','B'},
+{'7','8','9','C'},
+{'*','0','#','D'}
+};
+ 
+byte rowPins[ROWS] = {13,12,11,10}; //Pins to which the keypad is connected
+byte colPins[COLS]= {9,8,7,6};
+
+Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS ); //Creating the keypad
+
+#include <Servo.h>    //allow for a servo to work
+
+int panicButton = 0;  //variable for the panic button (location)
+
+int backLights = 1;   //variable for back lights (location)
+int frontLights = 2;  //variable for front lights (location)
+
+byte leds = 0;        //variable for lights
+
+boolean soundOn = true; //variable for whether or not the sound is on; "= true;" TO BE DELETED
+
+int sound = 3;        //variable of PIN where the sound is located
+int tones = 261;      //TO BE DELETED
+
+boolean servoSpin = false;  //variable for whether or not the motor should be spinning; "= false;" TO BE DELETED
+
+int servoPin = 4;     //variable for the motor
+ 
+Servo servo;          //registers a servo motor
+
+int angle = 0;        //servo position (degrees)
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(panicButton, INPUT_PULLUP);   //Register the panic button as an input
+  pinMode(backLights, OUTPUT);          //Register the back lights as an output
+  pinMode(frontLights, OUTPUT);         //Register the front lights as an output
+  servo.attach(servoPin);               //Register the servo
+
+  digitalWrite(frontLights, HIGH); //TO BE DELETED
+  digitalWrite(backLights, HIGH); //TO BE DELETED
+}
+ 
+void loop(){
+  char key = keypad.getKey();
+  if (key != NO_KEY){                 //when a key on the keypad is pressed
+    delay(60); 
+    switch (key){
+    case '#': checkPassword(); break; //if it's a "#" then check if the password is correct
+    case '*': resetPassword(); break; //if it's a "*" then reset the password written
+    default: processNumberKey(key);   //Process the key
+    }
+  }
+
+  if (passwordEnter == true){
+    panicButtonPress();               //If the correct password has been written, the button can be pressed
+  }
+
+  playSound();                        //Play sound if it's not turned off
+  
+  if (servoSpin == true){
+    Spin();                           //Make the motor spin if it's supposed to
+  }
+}
+
+void processNumberKey(char key) {
+   Serial.print(key);                 //Print the password on the serial monitor
+   currentPasswordLength++;           //The password therefore becomes longer
+   password.append(key);              //Add it to the password attempt
+   
+   if (currentPasswordLength == maxPasswordLength) {
+      checkPassword();                //When the max password length has been reached, check the password
+   } 
+}
+
+void checkPassword() {
+   if (password.evaluate()){          //If the password entered is the same as the set password
+      Serial.println(" OK.");         //YAY ^^
+      passwordEnter = true;           //Register it as unlocked
+   } else {
+      Serial.println(" Wrong password!"); //QQ
+      passwordEnter = false;          //Still locked, or relock it
+   } 
+   resetPassword();                   //Reset the password
+}
+
+void resetPassword() {
+   password.reset();                  //Reset the password attempt
+   currentPasswordLength = 0;         //The current password attempt now has 0 characters
+}
+
+void panicButtonPress() {
+  if (digitalRead(panicButton) == LOW){   //When the panic button is pressed
+    digitalWrite(backLights, LOW);        //Turn off the back lights
+    digitalWrite(frontLights, LOW);       //Turn off the front lights
+    noTone(sound);                        //Turn the sound off
+    soundOn = false;                      //Make sure the sound stays off
+    servoSpin = true;                     //Start the motor spin
+  }
+}
+
+void playSound() {
+  if (passwordEnter == false || digitalRead(panicButton) == HIGH){  //If the panic button has not been pressed or the password hasn't been entered
+    if (soundOn == true){                 //If the sound is on,
+      noTone(sound);
+      tone(sound, tones, 100);            //Play the current sound
+    }
+  }
+};
+
+void Spin(){
+  for(int i; i < 180; i++){
+    servo.write(i);                       //Rotate the motor 180 degrees (counterclockwise)
+    delay(10);
+  }
+  servo.write(0);                         //And repeat
+};
+
+//Help for the password:
+//http://ediy.com.my/index.php/tutorials/item/69-password-access-with-arduino-using-keypad
