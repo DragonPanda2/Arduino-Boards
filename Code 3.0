@@ -1,7 +1,7 @@
 #include <Keypad.h>
 #include <Password.h>     //Allow for a keypad and a password to be used
 
-Password password = Password( "666911" );   //This is the password (CAN BE CHANGED)
+Password password = Password( "123ABC" );   //This is the password (CAN BE CHANGED)
  
 byte maxPasswordLength = 8;                //Max amount of characters in the password
 byte currentPasswordLength = 0;             //The length of the keys pressed on the keypad
